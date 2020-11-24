@@ -87,11 +87,14 @@ public class LinearChart : MonoBehaviour
         Quaternion q = Quaternion.Euler(0f, 0f, angle);
 
         GameObject line = new GameObject("line " + i);
+        line.AddComponent<RectTransform>().anchorMax = new Vector2(0, 0);
+        line.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
         line.AddComponent<Image>();
         var lineObject = Instantiate(line, GetCenterOfTwoObject(startPoint, endPoint), q, content);
         lineObject.GetComponent<RectTransform>().sizeDelta = GetDeltaSize(startPoint, endPoint);
         lineObject.GetComponent<Image>().color = lineColor;
         lineObject.GetComponent<Image>().enabled = !hideLine;
+        Destroy(line);
         lines.Add(lineObject);
     }
 
@@ -112,13 +115,15 @@ public class LinearChart : MonoBehaviour
         {
             throw new NullReferenceException("Content in null!");
         }
-        GameObject point = Instantiate(new GameObject("Point " + i), content);
+        GameObject pointObject = new GameObject("Point " + i);
+        GameObject point = Instantiate(pointObject, content);
         point.AddComponent<RectTransform>().sizeDelta = pointSize;
         point.GetComponent<RectTransform>().anchoredPosition = vector3;
         point.GetComponent<RectTransform>().anchorMax = new Vector2(0, 0);
         point.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
         point.AddComponent<Image>().sprite = pointImage;
         point.GetComponent<Image>().enabled = !hidePoint;
+        Destroy(pointObject);
         return point;
     }
 }
